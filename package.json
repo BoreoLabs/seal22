@@ -6,9 +6,6 @@
   "scripts": {
     "dev": "SEAL22_DB_DIR=.data/pglite next dev -H 127.0.0.1 -p 5173",
     "build": "next build && node scripts/migrate.mjs",
-    "dev:vite": "vite",
-    "build:vite": "vite build",
-    "preview": "vite preview",
     "test": "SEAL22_DB=memory node --test"
   },
   "dependencies": {
@@ -20,9 +17,6 @@
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4.1.11",
-    "@tailwindcss/vite": "^4.1.11",
-    "@vitejs/plugin-react": "^4.7.0",
-    "tailwindcss": "^4.1.11",
-    "vite": "^7.1.2"
+    "tailwindcss": "^4.1.11"
   }
 }
