@@ -5,15 +5,21 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
+    "dev:next": "SEAL22_DB_DIR=.data/pglite next dev -H 127.0.0.1 -p 5174",
     "build": "vite build",
+    "build:next": "next build && node scripts/migrate.mjs",
     "preview": "vite preview",
-    "test": "node --test"
+    "test": "SEAL22_DB=memory node --test"
   },
   "dependencies": {
+    "@electric-sql/pglite": "^0.3.14",
+    "next": "^15.5.4",
+    "pg": "^8.16.3",
     "react": "^19.1.1",
     "react-dom": "^19.1.1"
   },
   "devDependencies": {
+    "@tailwindcss/postcss": "^4.1.11",
     "@tailwindcss/vite": "^4.1.11",
     "@vitejs/plugin-react": "^4.7.0",
     "tailwindcss": "^4.1.11",
