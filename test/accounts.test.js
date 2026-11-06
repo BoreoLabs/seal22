@@ -188,7 +188,7 @@ test.describe("cuentas", { concurrency: false }, () => {
     const current = await me(new Request("http://localhost/api/auth/me", { headers: { cookie } }));
     assert.equal(current.status, 200);
 
-    const gone = await logout(post("/api/auth/logout", {}, { cookie }));
+    const gone = await logout(post("/api/auth/logout", null, { cookie, rawBody: "" }));
     assert.equal(gone.status, 204);
     assert.equal(await gone.text(), "");
     assert.match(gone.headers.get("set-cookie"), /seal22_session=;/);
