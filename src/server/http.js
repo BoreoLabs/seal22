@@ -13,13 +13,15 @@ export function isSameOrigin(request) {
   } catch {
     urlHost = "";
   }
-  const host = request.headers.get("x-forwarded-host") || request.headers.get("host") || urlHost;
+  const forwarded = request.headers.get("x-forwarded-host")?.split(",")[0]?.trim() ?? "";
+  const host = request.headers.get("host") ?? "";
+  const allowed = new Set([urlHost, forwarded, host].filter(Boolean));
   if (!origin || origin === "null") {
     const fetchSite = request.headers.get("sec-fetch-site");
     return !fetchSite || fetchSite === "same-origin" || fetchSite === "none";
   }
   try {
-    return new URL(origin).host === host;
+    return allowed.has(new URL(origin).host);
   } catch {
     return false;
   }

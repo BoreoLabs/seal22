@@ -1,6 +1,5 @@
 import { lstat, readFile, realpath } from "node:fs/promises";
 import path from "node:path";
-import { requireUser } from "../../../../../../src/server/accounts.js";
 import { sql } from "../../../../../../src/server/db.js";
 import { safeJoin } from "../../../../../../src/server/files.js";
 import { isUuid, previewDirectory } from "../../../../../../src/server/sandbox.js";
@@ -24,20 +23,17 @@ const PREVIEW_HEADERS = {
   "Cache-Control": "private, no-store",
   "Content-Security-Policy": "frame-ancestors 'self'",
   "Referrer-Policy": "no-referrer",
+  "Access-Control-Allow-Origin": "*",
+  "Cross-Origin-Resource-Policy": "cross-origin",
 };
 
-export async function GET(request, context) {
-  const user = await requireUser(request);
-  if (!user?.id || !isUuid(user.id)) return deny("Necesitas entrar.", 401);
-
+export async function GET(_request, context) {
   const params = (await context?.params) ?? {};
   const id = typeof params.id === "string" ? params.id : "";
   if (!isUuid(id)) return missingPreview();
 
-  const rows = await sql(
-    "select id from sandbox_runs where id = $1::text and user_id = $2::text",
-    [id, user.id],
-  );
+  // The run id is the capability. The sandboxed iframe does not send the session cookie.
+  const rows = await sql("select id from sandbox_runs where id = $1::text", [id]);
   if (rows.length === 0) return missingPreview();
 
   const segments = Array.isArray(params.path) ? params.path : [];

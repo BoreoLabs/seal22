@@ -1,8 +1,8 @@
 # Seal22
 
-Micro alpha local de Seal22: escribes un prompt, ves el precio antes de generar y, si cabe en el tope de la sesión, aparece una preview que puedes retocar con otro prompt.
+Constructor de apps con precio visible antes de ejecutar. Creas una cuenta, abres un proyecto y lo retocas con otro prompt. El tope de cada proyecto es 0,25 USD. Si la siguiente petición no cabe, no se genera y no se descuenta.
 
-La hipótesis que cubre esta entrega es solo esa: **prompt → app → preview → edición por prompt**, con un coste cerrado. No hay cuentas, pagos, hosting ni un modelo de pago.
+El proveedor de esta alpha es `alpha-local`: interpreta el prompt en el servidor y no llama a un modelo de pago. Las cifras son la tarifa que confirmarías antes de ejecutar.
 
 ## Arranque
 
@@ -14,16 +14,19 @@ npm run dev
 
 Abre `http://127.0.0.1:5173`.
 
-`npm run build` deja la versión estática en `dist/`.
+`npm run build` deja la app de Next lista y aplica las migraciones si existe `DATABASE_URL`.
 
 ## Qué puedes hacer
 
-- Elegir un ejemplo o escribir el prompt. El precio (0,06 USD de base, más 0,01 USD por cada 200 caracteres) se muestra antes del botón.
-- Confirmar con el botón o con Ctrl+Enter. El tope de la sesión es 0,25 USD. Si la siguiente petición no cabe, no se genera y no se descuenta.
-- Usar la preview: tareas, notas, contador, carta, calculadora o una página sencilla.
-- Pedir un cambio: color, título, «añade…» o «quita…».
-- Abrir la pestaña Código y copiar o descargar `src/App.jsx` (React + Tailwind, sin backend).
+- Crear una cuenta, entrar y salir.
+- Crear un proyecto desde un prompt y ver el precio antes de confirmar.
+- Retocar la preview, copiar `src/App.jsx` y descargar el proyecto en zip.
+- Construir la preview en Docker cuando el host tiene el motor y la imagen `seal22-sandbox:alpha`. El contenedor va sin red del host, sin socket de Docker, sin privilegios, con 0,5 CPU y 512 MB, y solo monta la carpeta del proyecto. Si no hay Docker, la preview del navegador sigue activa.
 
-## Supuesto
+## Sandbox
 
-No hay clave de modelo en este entorno. El proveedor `alpha-local` interpreta el prompt en el navegador y no hace una llamada de red. Las cifras son la tarifa que confirmarías antes de ejecutar; esta alpha no cobra dinero real.
+La imagen se construye una vez, con red, desde `sandbox/`:
+
+```bash
+docker build -t seal22-sandbox:alpha sandbox
+```

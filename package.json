@@ -4,10 +4,10 @@
   "version": "0.1.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
-    "dev:next": "SEAL22_DB_DIR=.data/pglite next dev -H 127.0.0.1 -p 5174",
-    "build": "vite build",
-    "build:next": "next build && node scripts/migrate.mjs",
+    "dev": "SEAL22_DB_DIR=.data/pglite next dev -H 127.0.0.1 -p 5173",
+    "build": "next build && node scripts/migrate.mjs",
+    "dev:vite": "vite",
+    "build:vite": "vite build",
     "preview": "vite preview",
     "test": "SEAL22_DB=memory node --test"
   },

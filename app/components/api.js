@@ -64,13 +64,12 @@ export function saveBlob(blob, filename) {
   window.setTimeout(() => URL.revokeObjectURL(url), 1500);
 }
 
+const PREVIEW_SRC = /^\/api\/sandbox\/preview\/[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}\/index\.html$/i;
+
 export function safePreviewSrc(value) {
   if (typeof value !== "string") return "";
   const trimmed = value.trim();
-  if (!trimmed || trimmed.length > 4000) return "";
-  const lower = trimmed.toLowerCase();
-  if (lower.startsWith("javascript:") || lower.startsWith("data:") || lower.startsWith("vbscript:")) return "";
-  return trimmed;
+  return PREVIEW_SRC.test(trimmed) ? trimmed : "";
 }
 
 export function projectPath(id, suffix = "") {
